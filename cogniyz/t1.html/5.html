@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery & Slideshow</title>
+    <style>
+        /* Inline CSS styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .gallery {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .thumbnails {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .thumbnails img {
+            width: 150px; /* Thumbnail size */
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .thumbnails img:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            padding-top: 20px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%; /* Modal image size */
+            max-height: 90%; /* Modal image size */
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .slideshow-container {
+            max-width: 800px;
+            position: relative;
+            margin: 20px auto; /* Added margin for spacing */
+            overflow: hidden;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        .mySlides img {
+            width: 100%; /* Slideshow image size */
+            height: auto;
+        }
+
+        .fade {
+            animation: fadeEffect 5s infinite; /* Slideshow animation */
+        }
+
+        @keyframes fadeEffect {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <h1>Image Gallery & Slideshow</h1>
+
+        <div class="thumbnails">
+            <img src="https://tse3.mm.bing.net/th?id=OIP.m0pGNS-s7j3vYohMpJsPegHaEK&pid=Api&P=0&h=180" alt="Thumbnail 1" onclick="currentSlide(1)">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.TU-IrRzimPui9TbeGeXTCQHaEK&pid=Api&P=0&h=180" alt="Thumbnail 2" onclick="currentSlide(2)">
+            <img src="https://tse2.mm.bing.net/th?id=OIP.N2pSIoP--XqgJu45kdbkRgHaEK&pid=Api&P=0&h=180" alt="Thumbnail 3" onclick="currentSlide(3)">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.Ed-YkvapMgHD3H9SFSop3AHaF_&pid=Api&P=0&h=180" alt="Thumbnail 4" onclick="currentSlide(4)">
+            <img src="https://tse4.mm.bing.net/th?id=OIP.SZlDq6Iw1Lzazi1ucONdJwHaEK&pid=Api&P=0&h=180" alt="Thumbnail 5" onclick="currentSlide(5)">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.Q4-T6tTEu2xUk9rFlVRE2QHaEo&pid=Api&P=0&h=180" alt="Thumbnail 6" onclick="currentSlide(6)">
+        </div>
+        
+        <!-- Modal containers -->
+        <div id="modal1" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" src="https://tse3.mm.bing.net/th?id=OIP.m0pGNS-s7j3vYohMpJsPegHaEK&pid=Api&P=0&h=180" alt="Full Image 1">
+        </div>
+        <div id="modal2" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" src="https://tse1.mm.bing.net/th?id=OIP.TU-IrRzimPui9TbeGeXTCQHaEK&pid=Api&P=0&h=180" alt="Full Image 2">
+        </div>
+        <div id="modal3" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" src="https://tse2.mm.bing.net/th?id=OIP.N2pSIoP--XqgJu45kdbkRgHaEK&pid=Api&P=0&h=180" alt="Full Image 3">
+        </div>
+        <div id="modal4" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" src="https://tse1.mm.bing.net/th?id=OIP.Ed-YkvapMgHD3H9SFSop3AHaF_&pid=Api&P=0&h=180" alt="Full Image 4">
+        </div>
+        <div id="modal5" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" src="https://tse4.mm.bing.net/th?id=OIP.SZlDq6Iw1Lzazi1ucONdJwHaEK&pid=Api&P=0&h=180" alt="Full Image 5">
+        </div>
+        <div id="modal6" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img class="modal-content" src="https://tse1.mm.bing.net/th?id=OIP.Q4-T6tTEu2xUk9rFlVRE2QHaEo&pid=Api&P=0&h=180" alt="Full Image 6">
+        </div>
+        <!-- Add more modal containers for additional images -->
+
+        <!-- Slideshow section -->
+        <div class="slideshow-container">
+            <h2>Automatic Slideshow</h2>
+            <div class="mySlides">
+                <img src="https://tse3.mm.bing.net/th?id=OIP.m0pGNS-s7j3vYohMpJsPegHaEK&pid=Api&P=0&h=180" alt="Slideshow 1">
+            </div>
+            <div class="mySlides">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.TU-IrRzimPui9TbeGeXTCQHaEK&pid=Api&P=0&h=180" alt="Slideshow 2">
+            </div>
+            <div class="mySlides">
+                <img src="https://tse2.mm.bing.net/th?id=OIP.N2pSIoP--XqgJu45kdbkRgHaEK&pid=Api&P=0&h=180" alt="Slideshow 3">
+            </div>
+            <div class="mySlides">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.Ed-YkvapMgHD3H9SFSop3AHaF_&pid=Api&P=0&h=180" alt="Slideshow 4">
+            </div>
+            <div class="mySlides">
+                <img src="https://tse4.mm.bing.net/th?id=OIP.SZlDq6Iw1Lzazi1ucONdJwHaEK&pid=Api&P=0&h=180" alt="Slideshow 5">
+            </div>
+            <div class="mySlides">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.Q4-T6tTEu2xUk9rFlVRE2QHaEo&pid=Api&P=0&h=180" alt="Slideshow 6">
+            </div>
+        </div>
+
+        <script>
+            // JavaScript logic for slideshow
+            var slideIndex = 0;
+            showSlides();
+
+            function showSlides() {
+                var slides = document.getElementsByClassName("mySlides");
+                for (var i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                slideIndex++;
+                if (slideIndex > slides.length) { slideIndex = 1 }
+                slides[slideIndex - 1].style.display = "block";
+                setTimeout(showSlides, 5000); // Change image every 5 seconds
+            }
+
+            // JavaScript logic for modal
+            // Open the Modal
+            function currentSlide(n) {
+                var modal = document.getElementById("modal" + n);
+                modal.style.display = "block";
+            }
+
+            // Close the Modal
+            function closeModal() {
+                var modals = document.getElementsByClassName("modal");
+                for (var i = 0; i < modals.length; i++) {
+                    modals[i].style.display = "none";
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
